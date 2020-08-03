@@ -27,7 +27,9 @@ function CadastroCategoria() {
   }
 
   useEffect(() => {
-    const URL = 'http://localhost:8080/categorias';
+    const URL = window.location.hostname.includes('localhost')
+      ? 'http://localhost:8080/categorias'
+      : 'https://aluraflix-alan.herokuapp.com/categorias';
     fetch(URL)
       .then(async (response) => {
         const result = await response.json();
@@ -80,8 +82,8 @@ function CadastroCategoria() {
         />
 
         <ul>
-          {categorias.map((categoria, index) => (
-            <li key={`${categoria}${index}`}>
+          {categorias.map((categoria) => (
+            <li key={`${categoria.id}`}>
               {categoria.nome}
             </li>
           ))}
