@@ -3,28 +3,18 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm';
 
 function CadastroCategoria() {
-  const valoresIniciais = {
+  const initialValues = {
     nome: '',
     descricao: '',
     cor: '',
   };
 
+  const { handlerChange, values, clearForm } = useForm(initialValues);
+
   const [categorias, setCategorias] = useState([]);
-  const [valores, setValores] = useState(valoresIniciais);
-
-  function setValue(chave, valor) {
-    setValores({
-      ...valores,
-      [chave]: valor,
-    });
-  }
-
-  function handlerChange(event) {
-    const { name, value } = event.target;
-    setValue(name, value);
-  }
 
   useEffect(() => {
     const URL = window.location.hostname.includes('localhost')
@@ -44,23 +34,23 @@ function CadastroCategoria() {
       <h1>
         Cadastro de Categoria:
         {' '}
-        {valores.nome}
+        {values.nome}
       </h1>
 
       <form onSubmit={function handleSubmit(event) {
         event.preventDefault();
         setCategorias([
           ...categorias,
-          valores,
+          values,
         ]);
 
-        setValores(valoresIniciais);
+        clearForm(initialValues);
       }}
       >
         <FormField
           label="Nome da categoria"
           type="text"
-          value={valores.nome}
+          value={values.nome}
           name="nome"
           onChange={handlerChange}
         />
@@ -68,7 +58,7 @@ function CadastroCategoria() {
         <FormField
           tag="textarea"
           label="Descrição"
-          value={valores.descricao}
+          value={values.descricao}
           name="descricao"
           onChange={handlerChange}
         />
@@ -76,7 +66,7 @@ function CadastroCategoria() {
         <FormField
           label="Cor"
           type="color"
-          value={valores.cor}
+          value={values.cor}
           name="cor"
           onChange={handlerChange}
         />
