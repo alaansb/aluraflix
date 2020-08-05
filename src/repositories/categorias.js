@@ -10,10 +10,23 @@ function getAllWithVideos() {
 
         return jsonReponse;
       }
+      throw new Error('Erro to get all categories with videos');
+    });
+}
+
+function getAll() {
+  return fetch(`${URL_CATEGORIAS}`)
+    .then(async (response) => {
+      if (response.ok) {
+        const jsonReponse = await response.json();
+
+        return jsonReponse;
+      }
       throw new Error('Erro to get all categories');
     });
 }
 
 export default {
   getAllWithVideos,
+  getAll,
 };
