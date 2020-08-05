@@ -73,9 +73,11 @@ const Input = styled.input`
 `;
 
 function FormField({
-  label, type, name, value, onChange, tag,
+  label, type, name, value, onChange, tag, suggestions,
 }) {
   const fieldId = `id_${name}`;
+
+  const hasSuggestions = Boolean(suggestions.length);
 
   return (
     <FormFieldWrapper>
@@ -88,11 +90,25 @@ function FormField({
           name={name}
           value={value}
           onChange={onChange}
+          list={hasSuggestions ? `suggestionFor_${fieldId}` : undefined}
         />
         <Label.Text>
           {label}
           :
         </Label.Text>
+        {
+          hasSuggestions && (
+            <datalist id={`suggestionFor_${fieldId}`}>
+              {
+              suggestions.map((suggestion) => (
+                <option value={suggestion} key={`suggestionFor_${fieldId}_option${suggestion}`}>
+                  {suggestion}
+                </option>
+              ))
+            }
+            </datalist>
+          )
+        }
       </Label>
     </FormFieldWrapper>
   );
@@ -103,6 +119,7 @@ FormField.defaultProps = {
   value: '',
   onChange: () => {},
   tag: 'input',
+  suggestions: [],
 };
 
 FormField.propTypes = {
@@ -112,6 +129,7 @@ FormField.propTypes = {
   value: PropType.string,
   onChange: PropType.func,
   tag: PropType.string,
+  suggestions: PropType.arrayOf(PropType.string),
 };
 
 export default FormField;
